@@ -4,7 +4,7 @@ Tools for creating php shell scripts
 ## Installation
 
 ```
-composer require alfhen/phpshell
+composer require alfhen/php-shell
 ```
 
 ## Usage
