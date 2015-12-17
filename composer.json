@@ -1,5 +1,5 @@
 {
-    "name": "Alfhen/PhpShell",
+    "name": "alfhen/php-shell",
     "description": "Package with tools for creating php shell scripts",
     "license": "MIT",
     "keywords": ["PHP"],
