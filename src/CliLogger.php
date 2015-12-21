@@ -26,7 +26,7 @@ class CliLogger
      * @param string $message
      */
     public static function info($message = '') {
-        self::writeLine($message, SELF::CLI_COLOR_DEFAULT, self::CLI_TYPE_ERROR);
+        self::writeLine($message, SELF::CLI_COLOR_DEFAULT, self::CLI_TYPE_INFO);
     }
 
     /**
@@ -35,7 +35,7 @@ class CliLogger
      * @param string $message
      */
     public static function success($message = '') {
-        self::writeLine($message, SELF::CLI_COLOR_GREEN, self::CLI_TYPE_ERROR);
+        self::writeLine($message, SELF::CLI_COLOR_GREEN, self::CLI_TYPE_SUCCESS);
     }
 
     /**
