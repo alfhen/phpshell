@@ -8,52 +8,29 @@ use Exception;
 
 class CliArgsParser
 {
-    private $unparsedArguments = null;
-    private $parsedArguments = null;
-    private $requiredArguments = null;
-
     /**
-     * CliArgsParser parses cli arguments passed in; --agurment=<value> format.
+     * Get parsed cli arguments, CliArgsParser parses cli arguments passed in; --agurment=<value> format.
      *
-     * @param array $requiredArguments optional required argument keys
+     * @param array $requiredArguments optional array of requeired argument keys
+     * @return array|null
      * @throws ParseArgumentError
      */
-    public function __construct(array $requiredArguments = []) {
-
-        if(!isset($_SERVER['argv'])) {
-            throw new ParseArgumentError('Cannnot parse aguments; argv is not set');
-        }else{
-            $this->unparsedArguments = $_SERVER['argv'];
-            if(count($requiredArguments)) {
-                $this->requiredArguments = $requiredArguments;
-            }
-        }
+    public static function getArguments(array $requiredArguments = []) {
+        return self::parseArguments($requiredArguments);
     }
-
-
-    /**
-     * Get parsed cli arguments
-     *
-     * @return array|null
-     */
-    public function getArguments() {
-        if(is_null($this->parsedArguments)) {
-            return $this->parseArguments();
-        }
-        return $this->parsedArguments;
-    }
-
 
     /**
      * Validate that required params exist
+     * @param $requiredArguments
+     * @param $arguments
      * @return bool
      * @throws MissingArgumentError
      */
-    private function validateRequiredArguments() {
+    private static function validateRequiredArguments($requiredArguments, $arguments) {
 
-        if(!is_null($this->requiredArguments)) {
-            foreach($this->requiredArguments as $requiredArgument) {
-                if(!isset($this->parsedArguments[$requiredArgument])) {
+        if(count($requiredArguments)) {
+            foreach($requiredArguments as $requiredArgument) {
+                if(!isset($arguments[$requiredArgument])) {
                     throw new MissingArgumentError(
                         "Misssing required argument:
                          '$requiredArgument' please provide in
@@ -68,17 +45,24 @@ class CliArgsParser
     /**
      * Parses unparsedAguments
      *
+     * @param $requiredArguments
      * @return array|null
-     * @throws Exception
+     * @throws MissingArgumentError
+     * @throws ParseArgumentError
      */
-    private function parseArguments() {
+    private static function parseArguments($requiredArguments) {
 
-        if(!empty($this->unparsedArguments) && count($this->unparsedArguments) > 1 ) {
-            $this->parsedArguments = [];
-            foreach ($this->unparsedArguments as $unparsedArgument) {
+        if(!isset($_SERVER['argv'])) {
+            throw new ParseArgumentError('Cannnot parse aguments; argv is not set');
+        }
+        $unparsedArguments = $_SERVER['argv'];
+        $parsedArguments = [];
+
+        if(!empty($unparsedArguments) && count($unparsedArguments) > 1 ) {
+            foreach ($unparsedArguments as $unparsedArgument) {
                 if(strpos($unparsedArgument, '--') !== false) {
                     $parsedAgument = explode('=', trim($unparsedArgument, '--'));
-                    $this->parsedArguments[$parsedAgument[0]] = trim(
+                    $parsedArguments[$parsedAgument[0]] = trim(
                                                                     trim(
                                                                         $parsedAgument[1],
                                                                         '"'
@@ -88,7 +72,7 @@ class CliArgsParser
                 }
             }
         }
-        $this->validateRequiredArguments();
-        return $this->parsedArguments;
+        self::validateRequiredArguments($requiredArguments, $parsedArguments);
+        return $parsedArguments;
     }
 }

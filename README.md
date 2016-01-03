@@ -21,11 +21,8 @@ Each argument should be separated with a space.
   // an array of the required argument keys, is not required
   $requiredAguments = ['argument_one', 'argument_two'];
 
-  // create an instance of arguments parser and pass required argument keys
-  $argsParser = new Alfhen\PhpShell\CliArgsParser($requiredAguments);
-
   // get arguments as an associative array
-  $parsedArguments = $argsParser->getArguments();
+  $parsedArguments = Alfhen\PhpShell\CliArgsParser::getArguments($requiredAguments);
 
 ```
 ### CliLogger:

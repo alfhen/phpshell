@@ -18,9 +18,7 @@ class CliArgsParserTest extends PHPUnit_Framework_TestCase
 
         $requiredAguments = ['argument_one', 'argument_two'];
 
-        $argsParser = new Alfhen\PhpShell\CliArgsParser($requiredAguments);
-
-        $parsedArguments = $argsParser->getArguments();
+        $parsedArguments = Alfhen\PhpShell\CliArgsParser::getArguments($requiredAguments);
 
         $this->assertEquals($expectedArguments, $parsedArguments);
 
